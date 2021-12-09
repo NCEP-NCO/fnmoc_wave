@@ -1,0 +1,21 @@
+!
+! NWW3GRIB.TBL -- GRIB parameter conversion table version for NOAA WaveWatch 3 model
+! from Hendrik Tolman
+!
+! Version 1 - J.L.Partain/MPC	1/4/99
+!             ljcano		6/18/01
+! Old Wam Grib Index Table, provided by James Partain. 
+!
+!ID# NAME                             UNITS                GNAM         SCALE   MISSING
+!
+100 Sig hght of comb wind waves/swell m                    HTSGW            0  -9999.00 
+101 Direction of wind waves           Degree true          DRCTWW           0  -9999.00 
+102 Significant hght of wind waves    m                    HGHTWW           0  -9999.00 
+103 Mean period of wind waves         s                    PERDWW           0  -9999.00 
+104 Direction of swell waves          Degree true          DRCTSW           0  -9999.00 
+105 Significant hght of swell waves   m                    HGHTSW           0  -9999.00 
+106 Mean period of swell waves        s                    PERDSW           0  -9999.00 
+107 Primary wave direction            Degree true          DRCTPW           0  -9999.00 
+108 Primary wave mean period          s                    PERDPW           0  -9999.00 
+109 Secondary wave direction          Degree true          DRCTSW           0  -9999.00 
+110 Secondary wave mean period        s                    PERDSW           0  -9999.00 

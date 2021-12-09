@@ -1,0 +1,93 @@
+#!/bin/bash
+
+date
+export PS4=' $SECONDS + '
+set -xa
+
+##############################################
+# SETUP FNMOC_WAVE SHELL VARIABLES
+##############################################
+
+##############################################
+# obtain unique process id (pid) and make temp directory
+##############################################
+export pid=$$
+export DATA=${DATAROOT:?}/${jobid}
+if [ -z ${DATA} ]; then
+    echo "No Working Diretory defined"
+    exit 1
+else
+    mkdir $DATA
+    cd $DATA
+fi
+
+##############################################
+# Specify NET and RUN Name and model
+##############################################
+export NET=${NET:-fnmoc_wave}
+export RUN=${RUN:-fnmoc_wave}
+export model=${model:-fnmoc_wave}
+export model_ver=${fnmoc_wave_ver}
+
+##############################################
+# File To Log Msgs
+##############################################
+export jlogfile=${jlogfile:-$DATA/jlogfile.${job}.$$}
+
+##############################################
+# SENDECF  - Flag Events on ecFlow
+# SENDCOM  - Copy Files From TMPDIR to $COMOUT
+# SENDDBN  - Issue DBNet Client Calls
+##############################################
+export SENDCOM=${SENDCOM:-YES}
+export SENDECF=${SENDECF:-YES}
+export SENDDBN=${SENDDBN:-YES}
+ 
+##############################################
+# Specify Execution Areas
+##############################################
+export NAGRIB=nagrib_nc
+
+export FIXfnmoc_wave=${HOMEfnmoc_wave:?}/fix
+export USHfnmoc_wave=${HOMEfnmoc_wave:?}/ush
+
+##############################################
+# Run setpdy and initialize PDY variables
+##############################################
+setpdy.sh
+. ./PDY
+
+##############################################
+# Define COM directory
+##############################################
+export COMOUT=${COMOUT:-$(compath.py -o ${NET}/${model_ver})/${RUN}.${PDY}/gempak}
+export GRIBOUT=${GRIBOUT:-$(compath.py -o ${NET}/${model_ver})/${RUN}.${PDY}}
+
+mkdir -p $COMOUT
+
+##############################################
+# Define Outgoing Product directory
+##############################################
+export dcom=${dcom:-${DCOMROOT:?}}
+
+env
+
+##############################################
+# Execute the script
+${HOMEfnmoc_wave}/scripts/exfnmoc_wave_gempak.sh
+##############################################
+
+msg="ENDED NORMALLY."
+postmsg "$jlogfile" "$msg"
+
+##############################################
+# Remove the Temporary working directory
+##############################################
+cd $DATAROOT
+
+if [ $KEEPDATA != "YES" ]; then
+    rm -rf $DATA
+fi
+
+date
+
